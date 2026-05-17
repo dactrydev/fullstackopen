@@ -1,7 +1,7 @@
 const Persons = ({ persons }) => {
 	return persons.map((person) => (
 		<p key={person.id}>
-			{person.name} - {person.phone}
+			{person.name} - {person.number}
 		</p>
 	));
 };

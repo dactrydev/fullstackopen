@@ -10,7 +10,7 @@ const Form = ({ onAdd, persons }) => {
 		const newPerson = {
 			id: persons.length + 1,
 			name: newNameFormated,
-			phone: newPhone,
+			number: newPhone,
 		};
 		if (!onAdd(newPerson)) return;
 		setNewName("");

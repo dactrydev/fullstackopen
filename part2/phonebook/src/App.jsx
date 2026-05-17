@@ -1,11 +1,18 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import Form from "./components/Form";
 import Persons from "./components/Persons";
-
-const App = ({ data }) => {
-	const [persons, setPersons] = useState(data);
+const App = () => {
+	const [persons, setPersons] = useState([]);
 	const [search, setSearch] = useState("");
+
+	useEffect(() => {
+		axios
+			.get("http://localhost:3001/persons")
+			.then((response) => new Promise((resolve) => setTimeout(() => resolve(response), 2000)))
+			.then((response) => setPersons(response.data));
+	}, []);
 
 	const onAdd = (person) => {
 		if (person.name === "") {
@@ -16,12 +23,12 @@ const App = ({ data }) => {
 			alert(`Name ${person.name} already exists`);
 			return false;
 		}
-		if (person.phone === "") {
+		if (person.number === "") {
 			alert("Please enter a valid phone");
 			return false;
 		}
-		if (persons.some((p) => p.phone === person.phone)) {
-			alert(`Phone ${person.phone} already exists`);
+		if (persons.some((p) => p.number === person.number)) {
+			alert(`Phone ${person.number} already exists`);
 			return false;
 		}
 		setPersons(persons.concat(person));
@@ -44,8 +51,14 @@ const App = ({ data }) => {
 				onAdd={onAdd}
 				persons={persons}
 			/>
-			<h2>Numbers</h2>
-			<Persons persons={variablePersons} />
+			{variablePersons.length ? (
+				<>
+					<h2>Numbers</h2>
+					<Persons persons={variablePersons} />
+				</>
+			) : (
+				<p>Fetching data...</p>
+			)}
 		</div>
 	);
 };
