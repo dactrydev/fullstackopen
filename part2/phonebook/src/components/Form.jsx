@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Form = ({ onAdd, persons }) => {
+const Form = ({ onAdd }) => {
 	const [newName, setNewName] = useState("");
 	const [newPhone, setNewPhone] = useState("");
 
@@ -8,13 +8,15 @@ const Form = ({ onAdd, persons }) => {
 		e.preventDefault();
 		const newNameFormated = newName.trim();
 		const newPerson = {
-			id: persons.length + 1,
 			name: newNameFormated,
 			number: newPhone,
 		};
-		if (!onAdd(newPerson)) return;
-		setNewName("");
-		setNewPhone("");
+		onAdd(newPerson).then((ok) => {
+			if (!ok) return;
+			setNewName("");
+			setNewPhone("");
+			console.log("New person saved!");
+		});
 	};
 	return (
 		<form onSubmit={handleSubmit}>
