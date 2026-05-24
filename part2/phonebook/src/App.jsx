@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import Form from "./components/Form";
+import Notification from "./components/Notification";
 import Persons from "./components/Persons";
 import servicePerson from "./service/persons";
 const App = () => {
 	const [persons, setPersons] = useState([]);
 	const [search, setSearch] = useState("");
+	const [notification, setNotification] = useState({ message: "", status: "" });
+
+	const message = (message, status = "success") => {
+		setNotification({ message, status });
+		setTimeout(() => setNotification({ message: "", status: "" }), 3000);
+	};
 
 	useEffect(() => {
 		servicePerson
@@ -32,28 +39,43 @@ const App = () => {
 
 		console.log("Finish validation!");
 
+		// change Person if exists
 		if (existPerson) {
 			if (window.confirm(`${existPerson.name} is already added to Phonebook, replace ${existPerson.number} with ${person.number}?`)) {
-				return servicePerson.putData(person, existPerson.id).then((res) => {
-					setPersons((prev) => prev.map((p) => (p.id === existPerson.id ? res : p)));
-				});
+				return servicePerson
+					.putData(person, existPerson.id)
+					.then((res) => {
+						setPersons((prev) => prev.map((p) => (p.id === existPerson.id ? res : p)));
+					})
+					.catch(() => false);
 			}
 			return false;
 		}
+
+		// add new Person
 		return servicePerson
 			.postData(person)
 			.then((res) => {
 				setPersons((prev) => prev.concat(res));
+				message(`Added ${person.name}`);
 				return true;
 			})
 			.catch((e) => {
-				console.log("Someting went wrong: ", e);
+				message(`Someting went wrong: ${e.message}`, "error");
 				return false;
 			});
 	};
 
 	const deletePerson = (id) => {
-		servicePerson.deleteData(id).then((res) => setPersons(persons.filter((p) => p.id !== res.id)));
+		servicePerson
+			.deleteData(id)
+			.then((res) => {
+				setPersons(persons.filter((p) => p.id !== res.id));
+				message(`Deleted ${res.name}`);
+			})
+			.catch((e) => {
+				message(`Someting went wrong: ${e.message}`, "error");
+			});
 	};
 
 	const variablePersons = search ? persons.filter((p) => p.name.toLowerCase().includes(search.toLowerCase())) : persons;
@@ -62,6 +84,11 @@ const App = () => {
 		<div>
 			<h1>Phonebook</h1>
 			<h2>Search</h2>
+
+			<Notification
+				message={notification.message}
+				status={notification.status}
+			/>
 			<Filter
 				inputSearch={setSearch}
 				search={search}
