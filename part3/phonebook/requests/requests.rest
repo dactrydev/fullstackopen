@@ -1,0 +1,17 @@
+@host = http://localhost:3012/api/persons
+@id = 1028
+
+### GET ALL DATA
+GET {{host}} 
+
+### DELETE A PERSON
+DELETE {{host}}/{{id}}
+
+### POST NEW PERSON
+POST {{host}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "name":"Max1",
+    "number":"09998223w8"
+}
