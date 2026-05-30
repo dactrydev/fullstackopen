@@ -17,7 +17,6 @@ const App = () => {
 	useEffect(() => {
 		servicePerson
 			.getAllData()
-			.then((response) => new Promise((resolve) => setTimeout(() => resolve(response), 500)))
 			.then((response) => setPersons(response))
 			.catch((e) => {
 				throw new Error(e);
@@ -26,7 +25,6 @@ const App = () => {
 
 	const onAdd = async (person) => {
 		const existPerson = persons.find((p) => p.name === person.name);
-		console.log("Start validation...");
 		if (person.name === "") {
 			alert("Please enter a valid name");
 			return false;
@@ -37,11 +35,13 @@ const App = () => {
 			return false;
 		}
 
-		console.log("Finish validation!");
-
 		// change Person if exists
 		if (existPerson) {
-			if (window.confirm(`${existPerson.name} is already added to Phonebook, replace ${existPerson.number} with ${person.number}?`)) {
+			if (
+				window.confirm(
+					`${existPerson.name} is already added to Phonebook, replace ${existPerson.number} with ${person.number}?`,
+				)
+			) {
 				return servicePerson
 					.putData(person, existPerson.id)
 					.then((res) => {
@@ -56,7 +56,7 @@ const App = () => {
 		return servicePerson
 			.postData(person)
 			.then((res) => {
-				setPersons((prev) => prev.concat(res));
+				setPersons(persons.concat(res));
 				message(`Added ${person.name}`);
 				return true;
 			})
@@ -67,18 +67,21 @@ const App = () => {
 	};
 
 	const deletePerson = (id) => {
+		const targetPerson = persons.find((p) => p.id === id);
 		servicePerson
 			.deleteData(id)
-			.then((res) => {
-				setPersons(persons.filter((p) => p.id !== res.id));
-				message(`Deleted ${res.name}`);
+			.then(() => {
+				setPersons(persons.filter((p) => p.id !== id));
+				message(`Deleted ${targetPerson?.name}`);
 			})
 			.catch((e) => {
 				message(`Someting went wrong: ${e.message}`, "error");
 			});
 	};
 
-	const variablePersons = search ? persons.filter((p) => p.name.toLowerCase().includes(search.toLowerCase())) : persons;
+	const variablePersons = search
+		? persons.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
+		: persons;
 
 	return (
 		<div>
