@@ -25,6 +25,7 @@ const App = () => {
 
 	const onAdd = async (person) => {
 		const existPerson = persons.find((p) => p.name === person.name);
+
 		if (person.name === "") {
 			alert("Please enter a valid name");
 			return false;
@@ -51,7 +52,6 @@ const App = () => {
 			}
 			return false;
 		}
-
 		// add new Person
 		return servicePerson
 			.postData(person)
@@ -98,10 +98,7 @@ const App = () => {
 			/>
 			<br />
 			<h2>Add a new</h2>
-			<Form
-				onAdd={onAdd}
-				persons={persons}
-			/>
+			<Form onAdd={onAdd} />
 			{variablePersons.length ? (
 				<>
 					<h2>Numbers</h2>
