@@ -1,14 +1,15 @@
 let data = require("./data");
+const cors = require("cors");
 const morgan = require("morgan");
 const express = require("express");
 const app = express();
-const PORT = 3012;
+const PORT = process.env.PORT || 3012;
 const HOST = `http://localhost:${PORT}`;
 const PERSON_API_PATH = "/api/persons";
 
 morgan.token("body", (req) => JSON.stringify(req.body));
 
-app.use(express.json()).use(morgan(":method :url :status :body"));
+app.use(express.json()).use(morgan(":method :url :status :body")).use(cors()).use(express.static("dist"));
 
 const generateId = () => {
 	const id = Math.floor(Math.random() * 1000) + 1000;
@@ -32,7 +33,7 @@ app.get("/info", (req, res) => {
 app.get(PERSON_API_PATH + "/:id", (req, res) => {
 	const person = data.find((d) => d.id === req.params.id);
 	if (!person) return res.status(404).end();
-	res.send(person);
+	res.json(person);
 });
 
 app.delete(PERSON_API_PATH + "/:id", (req, res) => {
@@ -40,7 +41,15 @@ app.delete(PERSON_API_PATH + "/:id", (req, res) => {
 	if (!person) return res.status(404).end();
 
 	data = data.filter((d) => d.id !== req.params.id);
-	res.status(200).json(data);
+	res.status(204).end();
+});
+
+app.put(PERSON_API_PATH + "/:id", (req, res) => {
+	const person = data.find((d) => d.id === req.params.id);
+	if (!person) return res.status(404).end();
+	const personObj = { ...req.body, id: req.params.id };
+	data = data.map((d) => (d.id === req.params.id ? personObj : d));
+	res.status(200).json(personObj);
 });
 
 app.post(PERSON_API_PATH, (req, res) => {
@@ -56,7 +65,7 @@ app.post(PERSON_API_PATH, (req, res) => {
 		number,
 	};
 	data = data.concat(person);
-	res.json(data);
+	res.json(person);
 });
 
 const unknownEndpoint = (req, res) => {

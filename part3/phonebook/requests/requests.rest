@@ -1,5 +1,5 @@
 @host = http://localhost:3012/api/persons
-@id = 1028
+@id = 1796
 
 ### GET ALL DATA
 GET {{host}} 
