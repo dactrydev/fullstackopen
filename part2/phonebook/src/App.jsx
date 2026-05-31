@@ -7,6 +7,7 @@ import servicePerson from "./service/persons";
 const App = () => {
 	const [persons, setPersons] = useState([]);
 	const [search, setSearch] = useState("");
+	const [loading, setLoading] = useState(true);
 	const [notification, setNotification] = useState({ message: "", status: "" });
 
 	const message = (message, status = "success") => {
@@ -20,7 +21,8 @@ const App = () => {
 			.then((response) => setPersons(response))
 			.catch((e) => {
 				throw new Error(e);
-			});
+			})
+			.finally(() => setLoading(false));
 	}, []);
 
 	const onAdd = async (person) => {
@@ -99,7 +101,9 @@ const App = () => {
 			<br />
 			<h2>Add a new</h2>
 			<Form onAdd={onAdd} />
-			{variablePersons.length ? (
+			{loading ? (
+				<p>Loading...</p>
+			) : variablePersons.length ? (
 				<>
 					<h2>Numbers</h2>
 					<Persons
@@ -108,7 +112,7 @@ const App = () => {
 					/>
 				</>
 			) : (
-				<p>Fetching data...</p>
+				<h2>Nothing found</h2>
 			)}
 		</div>
 	);
