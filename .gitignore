@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+!part3/phonebook/dist
 dist-ssr
 *.local
 practice
