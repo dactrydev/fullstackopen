@@ -12,6 +12,6 @@ POST {{host}} HTTP/1.1
 Content-Type: application/json
 
 {
-    "name":"Max1",
-    "number":"09998223w8"
+    "name":"Max",
+    "number":"01234567"
 }
