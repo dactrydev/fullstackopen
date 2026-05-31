@@ -1,5 +1,4 @@
 let data = require("./data");
-const cors = require("cors");
 const morgan = require("morgan");
 const express = require("express");
 const app = express();
@@ -9,7 +8,7 @@ const PERSON_API_PATH = "/api/persons";
 
 morgan.token("body", (req) => JSON.stringify(req.body));
 
-app.use(express.json()).use(morgan(":method :url :status :body")).use(cors()).use(express.static("dist"));
+app.use(express.json()).use(morgan(":method :url :status :body")).use(express.static("dist"));
 
 const generateId = () => {
 	const id = Math.floor(Math.random() * 1000) + 1000;
