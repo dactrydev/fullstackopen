@@ -1,22 +1,32 @@
 {
-	"name": "phonebook-backend",
-	"version": "1.0.0",
-	"description": "backend practice project",
-	"license": "ISC",
-	"author": "Max Dactry",
-	"type": "commonjs",
-	"main": "index.js",
-	"scripts": {
-		"start": "node index.js",
-		"build:ui": "rm -rf dist && cd ../phonebook.local && npm run build && cp -r dist ../phonebook",
-		"deploy:full": "npm run build:ui && cd ../.. && git add . && git commit -m uibuild && git push && cd part3/phonebook",
-		"dev": "node --watch index.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"dependencies": {
-		"dotenv": "^17.4.2",
-		"express": "^5.2.1",
-		"mongoose": "^9.6.3",
-		"morgan": "^1.10.1"
-	}
+  "name": "phonebook-backend",
+  "version": "1.0.0",
+  "description": "backend practice project",
+  "license": "ISC",
+  "author": "Max Dactry",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "start": "node index.js",
+    "build:ui": "rm -rf dist && cd ../phonebook.local && npm run build && cp -r dist ../phonebook",
+    "deploy:full": "npm run build:ui && cd ../.. && git add . && git commit -m uibuild && git push && cd part3/phonebook",
+    "dev": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.6.3",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "eslint": "^10.4.1",
+    "globals": "^17.6.0",
+    "prettier": "^3.8.3"
+  }
 }
