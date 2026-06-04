@@ -1,17 +1,33 @@
-@host = http://localhost:3012/api/persons
-@id = 1796
+@host = http://localhost:3012
+@apiPath = http://localhost:3012/api/persons
+@id = 6a2089df0573b04c5f0511fb
 
-### GET ALL DATA
-GET {{host}} 
+### GET ALL PEOPLE
+GET {{apiPath}} 
+
+### GET A PERSON BY ID
+GET {{apiPath}}/{{id}}
 
 ### DELETE A PERSON
-DELETE {{host}}/{{id}}
+DELETE {{apiPath}}/{{id}}
 
 ### POST NEW PERSON
-POST {{host}} HTTP/1.1
+POST {{apiPath}} HTTP/1.1
 Content-Type: application/json
 
 {
-    "name":"Max",
-    "number":"01234567"
+    "name":"O",
+    "number":"657483920"
 }
+
+### UPDATE A PERSON
+PUT {{apiPath}}/{{id}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "name":"Oksana",
+    "number":"22222"
+}
+
+### GET INFO
+GET {{host}}/info 
