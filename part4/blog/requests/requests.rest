@@ -1,0 +1,17 @@
+@host = http://localhost:3014/api/blogs
+@id = 6a2bba6bbc0a288b1214b552
+GET {{host}}
+
+### Post
+POST {{host}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "title" : "Some Title",
+    "author" : "Max",
+    "url" : "http://localhost:3013/",
+    "likes": 5
+}
+
+### Delete
+DELETE {{host}}/{{id}}
